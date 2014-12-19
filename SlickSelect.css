@@ -17,6 +17,11 @@ select {
 	z-index:1;
 	cursor:pointer;
 	color:#666666;
+	-webkit-touch-callout:none;
+    user-select:none;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
 	box-shadow: inset 0 1px 0 0 white;
 	-moz-box-shadow:inset 0 1px 0 0 white;
 	-webkit-box-shadow:inset 0 1px 0 0 white;

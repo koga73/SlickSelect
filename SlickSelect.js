@@ -66,7 +66,6 @@ var SlickSelect = {
 				slickSelect.insertBefore(_instance);
 				_instance.hide();
 				
-				slickSelect.on("focusin", _methods._handler_focusin);
 				slickSelect.on("click", _methods._handler_click);
 				$(document).on("keydown", _methods._handler_keydown);
 				slickSelect.on("focusout", _methods._handler_focusout);
@@ -134,22 +133,17 @@ var SlickSelect = {
 				_methods.close();
 			},
 			
-			_handler_focusin:function(evt){
-				evt.preventDefault();
-				if (!_vars.isOpen){
-					_methods.open();
-				}
-				return false;
-			},
-			
 			_handler_click:function(evt){
 				evt.preventDefault();
-				if (!_vars.isOpen){
-					_methods.open();
-				}
 				var target = $(evt.target);
 				if (target.hasClass("slickselect-option")){
 					_methods.selectOption(target);
+				} else {
+					if (!_vars.isOpen){
+						_methods.open();
+					} else {
+						_methods.close();
+					}
 				}
 				return false;
 			},
