@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SlickSelect</title>
+		
+		<style type="text/css">
+			* {
+				margin:0;
+				border:0;
+				padding:0;
+				font-family:arial, helvetica, sans-serif;
+			}
+		</style>
+		
+		<link href="SlickSelect.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<select class="slt-test" data-placeholder="Placeholder">
+			<option value="test1">Test 1</option>
+			<option value="test2">Test 2</option>
+			<option value="test3">Test 3</option>
+			<option value="test4">Test 4</option>
+			<option value="test5">Test 5</option>
+		</select>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script type="text/javascript" src="SlickSelect.js"></script>
+		<script type="text/javascript">
+			$(".slt-test").SlickSelect();
+			
+			$(".slt-test").on("change", function(){
+				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+			});
+		</script>
+	</body>
+</html>
