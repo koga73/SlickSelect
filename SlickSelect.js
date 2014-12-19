@@ -155,7 +155,7 @@ var SlickSelect = {
 			},
 			
 			_handler_keydown:function(evt){
-				if (!_vars.isOpen){
+				if (!_vars._slickSelect.is(":focus")){
 					return;
 				}
 				var options = $("." + SlickSelect.CLASS_OPTION, _vars._slickSelect);
@@ -167,6 +167,9 @@ var SlickSelect = {
 							_vars._keyIndex = options.length - 1;
 						}
 						updateClass = true;
+						if (!_vars.isOpen){
+							_methods.open();
+						}
 						break;
 					case 40: //Down
 						_vars._keyIndex++;
@@ -174,13 +177,20 @@ var SlickSelect = {
 							_vars._keyIndex = 0;
 						}
 						updateClass = true;
+						if (!_vars.isOpen){
+							_methods.open();
+						}
 						break;
 					case 13: //Enter
 					case 32: //Space
-						if (_vars._keyIndex != -1){
-							_methods.selectOption(_vars._keyIndex);
+						if (!_vars.isOpen){
+							_methods.open();
 						} else {
-							_methods.close();
+							if (_vars._keyIndex != -1){
+								_methods.selectOption(_vars._keyIndex);
+							} else {
+								_methods.close();
+							}
 						}
 						break;
 					default:
