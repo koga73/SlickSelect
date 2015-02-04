@@ -1,5 +1,5 @@
 /*
-* SlickSelect v1.0.0 Copyright (c) 2014 AJ Savino
+* SlickSelect v1.1.0 Copyright (c) 2014 AJ Savino
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -153,30 +153,31 @@ var SlickSelect = {
 					return;
 				}
 				var options = $("." + SlickSelect.CLASS_OPTION, _vars._slickSelect);
-				var updateClass = false;
-				switch (evt.keyCode){
-					case 38: //Up
+				var updateSelected = false;
+				var keyCode = evt.keyCode;
+				switch (true){
+					case (keyCode == 38): //Up
 						_vars._keyIndex--;
 						if (_vars._keyIndex < 0){
 							_vars._keyIndex = options.length - 1;
 						}
-						updateClass = true;
+						updateSelected = true;
 						if (!_vars.isOpen){
 							_methods.open();
 						}
 						break;
-					case 40: //Down
+					case (keyCode == 40): //Down
 						_vars._keyIndex++;
 						if (_vars._keyIndex > options.length - 1){
 							_vars._keyIndex = 0;
 						}
-						updateClass = true;
+						updateSelected = true;
 						if (!_vars.isOpen){
 							_methods.open();
 						}
 						break;
-					case 13: //Enter
-					case 32: //Space
+					case (keyCode == 13): //Enter
+					case (keyCode == 32): //Space
 						if (!_vars.isOpen){
 							_methods.open();
 						} else {
@@ -187,13 +188,49 @@ var SlickSelect = {
 							}
 						}
 						break;
+					case (keyCode >= 48 && keyCode <= 57): //0-9
+					case (keyCode >= 65 && keyCode <= 90): //A-Z
+					case (keyCode >= 97 && keyCode <= 122): //a-z
+						var keyIndex = _vars._keyIndex;
+						var tempList = options.slice(_vars._keyIndex + 1, options.length);
+						tempList = $.merge(tempList, options.slice(0, _vars._keyIndex + 1));
+						var tempListLen = tempList.length;
+						for (var i = 0; i < tempListLen; i++){
+							var item = $(tempList[i]);
+							if (item.text().substr(0, 1).toLowerCase() == String.fromCharCode(keyCode).toLowerCase()){
+								_vars._keyIndex = (i + _vars._keyIndex + 1) % tempListLen;
+								updateSelected = true;
+								if (!_vars.isOpen){
+									_methods.open();
+								}
+								break;
+							}
+						}
+						break;
 					default:
 						return;
 				}
 				evt.preventDefault();
-				if (updateClass){
+				if (updateSelected){
 					options.removeClass(SlickSelect.CLASS_KEY_HIGHLIGHT);
-					options.eq(_vars._keyIndex).addClass(SlickSelect.CLASS_KEY_HIGHLIGHT);
+					var selectedOption = options.eq(_vars._keyIndex);
+					selectedOption.addClass(SlickSelect.CLASS_KEY_HIGHLIGHT);
+					
+					//Scrolling
+					var optionList = $("." + SlickSelect.CLASS_OPTIONS, _vars._slickSelect);
+					var scrollHeight = optionList[0].scrollHeight;
+					var height = optionList.height();
+					if (scrollHeight > height){
+						var scrollTop = optionList.scrollTop();
+						var selectedTop = selectedOption.position().top + scrollTop;
+						var selectedHeight = selectedOption.outerHeight();
+						//Needs to scroll
+						if (selectedTop + selectedHeight > scrollTop + height){
+							optionList.scrollTop(selectedTop - height + selectedHeight);
+						} else if (selectedTop < scrollTop){
+							optionList.scrollTop(selectedTop);
+						}
+					}
 				}
 				return false;
 			},
