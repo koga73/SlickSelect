@@ -5,6 +5,9 @@ select {
 .slickselect {
 	display:inline-block;
 	min-width:100px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
 	padding:12px 32px 6px 8px;
 	border-radius:2px;
 	-moz-border-radius:2px;

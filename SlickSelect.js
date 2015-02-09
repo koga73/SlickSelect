@@ -1,5 +1,5 @@
 /*
-* SlickSelect v1.1.0 Copyright (c) 2014 AJ Savino
+* SlickSelect v1.1.1 Copyright (c) 2014 AJ Savino
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,8 @@ var SlickSelect = {
 		var _methods = {
 			init:function(){
 				var slickSelect = $(SlickSelect.TEMPLATE_SELECT);
-				slickSelect.attr("class", slickSelect.attr("class") + " " + _instance.attr("class")); //Copy classes
+				var instanceClasses = (_instance.attr("class")) ? " " + _instance.attr("class") : "";
+				slickSelect.attr("class", slickSelect.attr("class") + instanceClasses); //Copy classes
 				
 				var options = $("option", _instance);
 				options.each(function(index){
