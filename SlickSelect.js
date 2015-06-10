@@ -61,7 +61,13 @@ var SlickSelect = {
 				var options = $("option", _instance);
 				options.each(function(index){
 					var option = $(SlickSelect.TEMPLATE_OPTION).append($(this).html());
-					option.attr("data-value", $(this).attr("value"));
+					for (var i = 0; i < this.attributes.length; i++) {
+                        var attrib = this.attributes[i];
+                        if (attrib.specified && attrib.name !== "value") {
+                            option.attr(attrib.name, attrib.value);
+                        }
+                    }
+                    option.attr("data-value", $(this).attr("value"));
 					$("." + SlickSelect.CLASS_OPTIONS, slickSelect).append(option);
 				});
 				slickSelect.insertBefore(_instance);
