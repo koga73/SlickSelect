@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SlickSelect</title>
+		
+		<style type="text/css">
+			* {
+				margin:0;
+				border:0;
+				padding:0;
+				font-family:arial, helvetica, sans-serif;
+			}
+			
+			#container {
+				margin-top:256px;
+				font-size:0; //Hack to get inline-block elements to not have space between them
+			}
+			#sltPeople {
+				float:left;
+			}
+			#sltDay {
+				float:left;
+			}
+			#sltTime {
+				float:left;
+			}
+			.slickselect {
+				width:33.33%
+			}
+		</style>
+		
+		<link href="SlickSelectScroll.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<div id="container">
+			<select id="sltPeople" name="sltPeople">
+				<option value="1">1 person</option>
+				<option value="2">2 people</option>
+				<option value="3">3 people</option>
+				<option value="4">4 people</option>
+				<option value="5">5 people</option>
+			</select>			
+			<select id="sltDay" name="sltDay">
+				<option value="today">Today</option>
+				<option value="tomorrow">Tomorrow</option>
+				<option value="tuesday">Tuesday</option>
+				<option value="wednesday">Wednesday</option>
+				<option value="thursday">Thursday</option>
+			</select>
+			<select id="sltTime" name="sltTime">
+				<option value="7:00">7:00PM</option>
+				<option value="7:30">7:30PM</option>
+				<option value="8:00">8:00PM</option>
+				<option value="8:30">8:30PM</option>
+				<option value="9:00">9:00PM</option>
+			</select>
+		</div>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script type="text/javascript" src="SlickSelect.js"></script>
+		<script type="text/javascript">
+			$("#sltPeople").SlickSelect({
+				scroll:true
+			}).on("change", function(){
+				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+			});
+			
+			$("#sltDay").SlickSelect({
+				scroll:true
+			}).on("change", function(){
+				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+			})
+			
+			$("#sltTime").SlickSelect({
+				scroll:true
+			}).on("change", function(){
+				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+			})
+		</script>
+	</body>
+</html>

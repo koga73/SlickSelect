@@ -1,5 +1,5 @@
 /*
-* SlickSelect v1.1.2 Copyright (c) 2014 AJ Savino
+* SlickSelect v1.2.0 Copyright (c) 2015 AJ Savino
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -31,11 +31,13 @@ var SlickSelect = {
 	CLASS_SELECTED:"slickselect-selected",
 	CLASS_OPTIONS:"slickselect-options",
 	CLASS_OPTION:"slickselect-option",
+	CLASS_OPTION_SELECTED:"slickselect-option-selected",
 	CLASS_OPEN:"slickselect-open",
 	CLASS_KEY_HIGHLIGHT:"slickselect-key-highlight",
 	
 	defaults:{
-		placeholder:null
+		placeholder:null,
+		scroll:false
 	}
 };
 (function($){ //Dependencies: jQuery
@@ -47,6 +49,10 @@ var SlickSelect = {
 			_slickSelect:null,
 			_keyIndex:-1,
 			
+			_isDragging:false,
+			_beginDragPoint:null,
+			_beginDragOptionsPoint:null,
+			
 			isOpen:false,
 			selectedIndex:-1,
 			value:null
@@ -57,6 +63,7 @@ var SlickSelect = {
 				var slickSelect = $(SlickSelect.TEMPLATE_SELECT);
 				var instanceClasses = (_instance.attr("class")) ? " " + _instance.attr("class") : "";
 				slickSelect.attr("class", slickSelect.attr("class") + instanceClasses); //Copy classes
+				_vars._slickSelect = slickSelect;
 				
 				var options = $("option", _instance);
 				options.each(function(index){
@@ -73,16 +80,24 @@ var SlickSelect = {
 				slickSelect.insertBefore(_instance);
 				_instance.hide();
 				
-				slickSelect.on("click", _methods._handler_click);
-				$(document).on("keydown", _methods._handler_keydown);
-				slickSelect.on("focusout", _methods._handler_focusout);
-				_vars._slickSelect = slickSelect;
-				
 				var selected = options.filter("[selected]").val();
 				if (selected){
 					_methods.selectOption(selected);
 				} else {
 					_methods.selectOption(-1);
+				}
+				
+				var doc = $(document);
+				$(document).on("keydown", _methods._handler_keydown);
+				slickSelect.on("focusout", _methods._handler_focusout);
+				if (_options.scroll){
+					slickSelect.on("touchstart mousedown", _methods._handler_beginDrag);
+					doc.on("touchmove mousemove", _methods._handler_moveDrag);
+					doc.on("touchend mouseup", _methods._handler_endDrag);
+					
+					$("." + SlickSelect.CLASS_SELECTED, _vars._slickSelect).html("");
+				} else {
+					slickSelect.on("click", _methods._handler_click);
 				}
 			},
 			
@@ -111,6 +126,7 @@ var SlickSelect = {
 			
 			selectOption:function(option){
 				var options = $("." + SlickSelect.CLASS_OPTION, _vars._slickSelect);
+				options.removeClass(SlickSelect.CLASS_OPTION_SELECTED);
 				if (!isNaN(option)){ //Number: Index
 					if (option == -1){ //Placeholder
 						var placeholder = _instance.attr("data-placeholder") || _options.placeholder;
@@ -133,7 +149,13 @@ var SlickSelect = {
 				_vars.selectedIndex = option.index();
 				_vars.value = option.attr("data-value");
 				
-				$("." + SlickSelect.CLASS_SELECTED, _vars._slickSelect).html(option.html());
+				var selectedOption = options.eq(_vars.selectedIndex);
+				selectedOption.addClass(SlickSelect.CLASS_OPTION_SELECTED);
+				if (_options.scroll){
+					$("." + SlickSelect.CLASS_OPTIONS, _vars._slickSelect).css("top", (-selectedOption.position().top - 1) + "px");
+				} else {
+					$("." + SlickSelect.CLASS_SELECTED, _vars._slickSelect).html(option.html());
+				}
 				_instance[0].selectedIndex = _vars.selectedIndex;
 				_instance.trigger(SlickSelect.EVENT_CHANGE);
 				
@@ -248,6 +270,71 @@ var SlickSelect = {
 					_methods.close();
 				}
 				return false;
+			},
+			
+			_handler_beginDrag:function(evt){
+				if (_vars._isDragging){
+					return;
+				}
+				_vars._isDragging = true;
+				_vars._beginDragPoint = _methods._getTouchPoint(evt);
+				
+				//TODO: Optimize this
+				var options = $("." + SlickSelect.CLASS_OPTIONS, _vars._slickSelect);
+				var optionsPosition = options.position();
+				_vars._beginDragOptionsPoint = [optionsPosition.left, optionsPosition.top];
+			},
+			
+			_handler_moveDrag:function(evt){
+				if (!_vars._isDragging){
+					return;
+				}
+				var touchPoint = _methods._getTouchPoint(evt);
+				
+				//TODO: Optimize this
+				var slickSelect = _vars._slickSelect;
+				var options = $("." + SlickSelect.CLASS_OPTIONS, slickSelect);
+				var newTop = _vars._beginDragOptionsPoint[1] + (touchPoint[1] - _vars._beginDragPoint[1]);
+				var minTop = slickSelect.outerHeight() - options.outerHeight() - 1;
+				var maxTop = -1;
+				newTop = Math.max(Math.min(newTop, maxTop), minTop);
+				
+				var optionsItems = $("." + SlickSelect.CLASS_OPTION, _vars._slickSelect);
+				var optionsItemsLen = optionsItems.length;
+				for (var i = 0; i < optionsItemsLen; i++){
+					var option = $(optionsItems[i]);
+					var optionTop = options.position().top + option.position().top;
+					var optionMiddle = optionTop + option.outerHeight() * 0.5;
+					var slickSelectHalfHeight = slickSelect.outerHeight() * 0.5;
+					if (Math.abs(optionMiddle - slickSelectHalfHeight) < slickSelectHalfHeight){
+						optionsItems.removeClass(SlickSelect.CLASS_OPTION_SELECTED);
+						optionsItems.eq(i).addClass(SlickSelect.CLASS_OPTION_SELECTED);
+					}
+				}
+				
+				options.css("top", newTop + "px");
+			},
+			
+			_handler_endDrag:function(evt){
+				if (!_vars._isDragging){
+					return;
+				}
+				_vars._isDragging = false;
+				
+				_methods.selectOption($("." + SlickSelect.CLASS_OPTION_SELECTED, _vars._slickSelect));
+			},
+			
+			_getTouchPoint:function(evt){
+				var pointData = evt;
+				if (evt.originalEvent){
+					if (evt.originalEvent.touches || evt.originalEvent.changedTouches){
+						pointData = evt.originalEvent.touches[0] || evt.originalEvent.changedTouches[0];
+					}
+				}
+				return [
+					pointData.clientX,
+					pointData.clientY
+				];
 			}
 		};
 		

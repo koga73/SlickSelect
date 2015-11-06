@@ -48,9 +48,6 @@ select {
 }
 
 .slickselect:focus {
-	outline:none;
-	-moz-outline:none;
-	-webkit-outline:none;
 	background:#DBDDDD;
 	background:linear-gradient(to bottom, #DBDDDD 0%, #F0F2F2 100%);
 	background:-moz-linear-gradient(top, #DBDDDD 0%, #F0F2F2 100%);
