@@ -8,7 +8,7 @@
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
-	padding:12px 16px;
+	padding:12px 6px;
 	border-top:1px solid #C9C9C9;
 	border-bottom:1px solid #C9C9C9;
 	font-size:14px;
@@ -49,7 +49,7 @@
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-webkit-box-sizing:border-box;
-	padding:12px 16px;
+	padding:6px 0;
 	border-top:1px solid transparent;
 	border-bottom:1px solid transparent;
 	transition:color 0.5s;
@@ -57,12 +57,14 @@
 	-webkit-transition:color 0.5s;
 }
 
-.slickselect ul li.slickselect-option-selected {
+.slickselect ul.slickselect-options li.slickselect-option-selected {
 	font-weight:bold;
 	color:#333;
+    font-size:1.1em;
+    padding:12px 0;
 }
 
-.slickselect ul li.slickselect-option-highlight {
+.slickselect ul.slickselect-options li.slickselect-option-highlight {
 	background-color:rgb(77, 144, 254);
 	background-color:rgba(77, 144, 254, 0.25);
 }
