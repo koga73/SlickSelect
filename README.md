@@ -32,16 +32,6 @@ $("#sltTest").on("change", function(){
 ----------
 
 ####JavaScript API####
-JavaScript
-```javascript
-//Show an overlay. Second and third parameters optional. See below for parameter info
-Overlay.show("myOverlay1", {
-	containerClass:"slide-up"
-}, myCallback);
-
-//Hide the current overlay. Parameters optional
-Overlay.hide(myCallback);
-```
 ```javascript
 /* Events */
 SlickSelect.EVENT_CHANGE
