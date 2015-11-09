@@ -1,4 +1,98 @@
 ##SlickSelect##
 *By: AJ Savino*
 
-A simple JavaScript library to replace select dropdowns with one that can be easily styled via CSS.
+SlickSelect - A jQuery plugin that extends select dropdown styles and functionality. Uses standard select markup. Works down to IE8. Keyboard accessible. Supports touch events for "scrolling" lists (see demo).
+
+###Implementation###
+Include JS and CSS files on your page in addition to jQuery
+
+HTML
+```html
+<!-- This markup gets hidden and replaced by SlickSelect markup -->
+<!-- When the SlickSelect selection changes the original select is updated -->
+<!-- data-placeholder attribute is optional -->
+<select data-placeholder="Placeholder">
+	<option value="test1">Test 1</option>
+	<option value="test2">Test 2</option>
+	<option value="test3">Test 3</option>
+	<option value="test4">Test 4</option>
+	<option value="test5">Test 5</option>
+</select>
+```
+
+JS
+```html
+$("#sltTest").SlickSelect();
+			
+$("#sltTest").on("change", function(){
+	console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+});
+```
+
+----------
+
+####JavaScript API####
+JavaScript
+```javascript
+//Show an overlay. Second and third parameters optional. See below for parameter info
+Overlay.show("myOverlay1", {
+	containerClass:"slide-up"
+}, myCallback);
+
+//Hide the current overlay. Parameters optional
+Overlay.hide(myCallback);
+```
+```javascript
+/* Events */
+SlickSelect.EVENT_CHANGE
+SlickSelect.EVENT_OPEN
+SlickSelect.EVENT_CLOSE
+
+
+/* Methods */
+
+//Parameters are optional
+var ss = $("#sltTest").SlickSelect({
+	placeholder:null,	//Placeholder text
+	scroll:false,		//Enable touch scrolling
+	scrollSnapDist:8,	//Distance to snap to option
+	clickDist:8			//Distance to trigger click rather than scroll	
+});
+
+//Called automatically
+ss.SlickSelect.initialize();
+
+//Destroys the SlickSelect instance and will need to be reinitialized
+ss.SlickSelect.destroy();
+
+//Opens the SlickSelect dropdown
+ss.SlickSelect.open();
+
+//Closes the SlickSelect dropdown
+ss.SlickSelect.close();
+
+//Selects an option
+//The 'option' parameter can be an index, value, or $element
+//Passing -1 will select the placeholder if present
+ss.SlickSelect.selectOption(option);
+
+//Returns true if the dropdown is open
+ss.SlickSelect.isOpen();
+
+//Returns the selected index
+//Returns -1 if the placeholder is selected
+ss.SlickSelect.selectedIndex();
+
+//Returns the selected value
+ss.SlickSelect.value();
+```
+
+----------
+
+####Events####
+```javascript
+//Note: Events are fired from the original select element
+$("#sltTest").on("change", function(){
+	console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
+});
+```

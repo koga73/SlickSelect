@@ -15,7 +15,7 @@
 		<link href="css/SlickSelect.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
-		<select class="slt-test" data-placeholder="Placeholder">
+		<select id="sltTest" data-placeholder="Placeholder">
 			<option value="test1">Test 1</option>
 			<option value="test2">Test 2</option>
 			<option value="test3">Test 3</option>
@@ -26,9 +26,9 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/SlickSelect.js"></script>
 		<script type="text/javascript">
-			$(".slt-test").SlickSelect();
+			$("#sltTest").SlickSelect();
 			
-			$(".slt-test").on("change", function(){
+			$("#sltTest").on("change", function(){
 				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
 			});
 		</script>

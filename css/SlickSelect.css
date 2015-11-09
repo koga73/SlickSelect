@@ -1,4 +1,4 @@
-.select-hidden {
+.slickselect-hidden {
 	display:none;
 }
 
@@ -19,11 +19,11 @@
 	position:relative;
 	z-index:1;
 	cursor:pointer;
-	color:#666666;
-	-webkit-touch-callout:none;
-    user-select:none;
+	color:#333;
+	user-select:none;
     -moz-user-select:none;
     -webkit-user-select:none;
+    -webkit-touch-callout:none;
     -ms-user-select:none;
 	box-shadow: inset 0 1px 0 0 white;
 	-moz-box-shadow:inset 0 1px 0 0 white;
@@ -56,11 +56,15 @@
 	background:-ms-linear-gradient(top, #DBDDDD 0%, #F0F2F2 100%);
 }
 
-.slickselect.slickselect-open ul {
+.slickselect .slickselect-display-selected {
+	display:inline-block;
+}
+
+.slickselect.slickselect-open ul.slickselect-options {
 	display:block;
 }
 
-.slickselect ul {
+.slickselect ul.slickselect-options {
 	display:none;
 	background-color:#F0F2F2;
 	position:absolute;
@@ -74,14 +78,19 @@
 	overflow:auto;
 }
 
-.slickselect ul li {
+.slickselect ul.slickselect-options li.slickselect-option {
 	padding:8px 32px 8px 8px;
 }
 
-.slickselect ul li:hover {
+.slickselect ul.slickselect-options li.slickselect-option:hover {
 	background-color:#DBDDDD;
 }
-		
-.slickselect ul li.slickselect-option-highlight {
-	background-color:#DBDDFF;
+
+.slickselect ul.slickselect-options li.slickselect-option-selected {
+	
+}
+
+.slickselect ul.slickselect-options li.slickselect-option-highlight {
+	background-color:rgb(77, 144, 254);
+	background-color:rgba(77, 144, 254, 0.25);
 }
