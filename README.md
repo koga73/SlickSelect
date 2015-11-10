@@ -50,7 +50,9 @@ var ss = $("#sltTest").SlickSelect({
 });
 
 //Called automatically
-ss.SlickSelect.initialize();
+//The 'initialSelection' parameter is optional but allows will automatically call selectOption for you
+//See selectOption for parameter details
+ss.SlickSelect.initialize(initialSelection);
 
 //Destroys the SlickSelect instance and will need to be reinitialized
 ss.SlickSelect.destroy();
@@ -65,6 +67,10 @@ ss.SlickSelect.close();
 //The 'option' parameter can be an index, value, or $element
 //Passing -1 will select the placeholder if present
 ss.SlickSelect.selectOption(option);
+
+//Updates the list of options from the original select
+//Calls destroy then initialize while attempting to preserve the selected option
+ss.SlickSelect.update();
 
 //Returns true if the dropdown is open
 ss.SlickSelect.isOpen();

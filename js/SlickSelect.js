@@ -1,5 +1,5 @@
 /*
-* SlickSelect v2.0.1 Copyright (c) 2015 AJ Savino
+* SlickSelect v2.1.0 Copyright (c) 2015 AJ Savino
 * https://github.com/koga73/SlickSelect
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -62,7 +62,7 @@ var SlickSelect = {
 		};
 		
 		var _methods = {
-			initialize:function(){
+			initialize:function(initialSelection){
 				//Copy classes
 				var selectClasses = _$select[0].getAttribute("class");
 				selectClasses = (selectClasses) ? selectClasses + " " : "";
@@ -113,11 +113,15 @@ var SlickSelect = {
 				_$select[0].parentNode.insertBefore(slickSelect, _$select[0]);
 				_$select.addClass(SlickSelect.CLASS_HIDDEN);
 				
-				var selected = _$select[0].querySelectorAll("option[selected]");
-				if (selected.length){
-					_methods.selectOption(selected[0].getAttribute("value"));
+				if (initialSelection){
+					_methods.selectOption(initialSelection);
 				} else {
-					_methods.selectOption(-1);
+					var selected = _$select[0].querySelectorAll("option[selected]");
+					if (selected.length){
+						_methods.selectOption(selected[0].getAttribute("value"));
+					} else {
+						_methods.selectOption(-1);
+					}
 				}
 				
 				var $slickSelect = $(slickSelect);
@@ -158,6 +162,8 @@ var SlickSelect = {
 				
 				_vars._beginDragPoint = null;
 				_vars._beginDragOptionsPoint = null;
+				_vars.selectedIndex = -1;
+				_vars.value = null;
 				
 				_$select.removeClass(SlickSelect.CLASS_HIDDEN);
 			},
@@ -215,14 +221,18 @@ var SlickSelect = {
 				} else {
 					$option = option;
 				}
-				var selectedIndex = $option.index();
+				var selectedIndex = _vars.selectedIndex;
+				if ($option.length){
+					selectedIndex = $option.index();
+				} else if (selectedIndex < 0 || selectedIndex > $slickSelectOptions.length - 1){
+					selectedIndex = 0;
+				}
 				
 				var $optionSelected = $slickSelectOptions.eq(selectedIndex);
 				$optionSelected.addClass(SlickSelect.CLASS_OPTION_SELECTED);
 				if (_params.scroll){
 					_vars._options.style.top = (-$optionSelected.position().top - 1) + "px";
 				}
-				
 				if (_vars.selectedIndex != selectedIndex){
 					_vars._displaySelected.innerHTML = $optionSelected[0].innerHTML;
 					_vars.selectedIndex = selectedIndex;
@@ -232,6 +242,12 @@ var SlickSelect = {
 				}
 				
 				_methods.close();
+			},
+			
+			update:function(){
+				var value = _vars.value;
+				_methods.destroy();
+				_methods.initialize(value);
 			},
 			
 			_handler_click:function(evt){
@@ -442,7 +458,8 @@ var SlickSelect = {
 			destroy:_methods.destroy,
 			open:_methods.open,
 			close:_methods.close,
-			selectOption:_methods.selectOption
+			selectOption:_methods.selectOption,
+			update:_methods.update
 		};
 		_$select.SlickSelect.initialize();
 		return _$select; //jQuery chaining
