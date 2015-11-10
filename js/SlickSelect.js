@@ -1,5 +1,5 @@
 /*
-* SlickSelect v2.0.0 Copyright (c) 2015 AJ Savino
+* SlickSelect v2.0.1 Copyright (c) 2015 AJ Savino
 * https://github.com/koga73/SlickSelect
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -92,15 +92,19 @@ var SlickSelect = {
 					slickSelectOption.setAttribute("class", SlickSelect.CLASS_OPTION);
 					slickSelectOption.innerHTML = selectOption.innerHTML;
 					
-					var selectAttributes = selectOption.attributes.length;
+					//Copy attributes
+					var selectAttributes = selectOption.attributes;
 					var selectAttributesLen = selectAttributes.length;
 					for (var j = 0; j < selectAttributesLen; j++){
                         var attrib = selectAttributes[j];
-                        if (attrib.specified && attrib.name !== "value"){
-                            slickSelectOption.setAttribute(attrib.name, attrib.value);
+                        if (attrib.specified){
+							if (attrib.name == "value"){
+								slickSelectOption.setAttribute("data-value", selectOption.getAttribute("value"));
+							} else if (attrib.name != "class" && !/^(data\-)?ng\-/.test(attrib.name)){
+								slickSelectOption.setAttribute(attrib.name, attrib.value);
+							}
                         }
                     }
-                    slickSelectOption.setAttribute("data-value", selectOption.getAttribute("value"));
 					options.appendChild(slickSelectOption);
 				}
 				slickSelect.appendChild(displaySelected);
