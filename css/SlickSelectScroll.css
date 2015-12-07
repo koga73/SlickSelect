@@ -33,6 +33,7 @@
 .slickselect .slickselect-display-selected {
 	display:inline-block;
 	visibility:hidden;
+	width:100%;
 }
 
 .slickselect ul.slickselect-options {
