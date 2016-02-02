@@ -1,5 +1,5 @@
 /*
-* SlickSelect v2.1.0 Copyright (c) 2015 AJ Savino
+* SlickSelect v2.1.1 Copyright (c) 2016 AJ Savino
 * https://github.com/koga73/SlickSelect
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -390,6 +390,7 @@ var SlickSelect = {
 			},
 			
 			_handler_moveDrag:function(evt){
+				evt.preventDefault();
 				if (!_vars._isDragging){
 					return;
 				}
