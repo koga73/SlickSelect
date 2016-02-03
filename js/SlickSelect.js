@@ -1,5 +1,5 @@
 /*
-* SlickSelect v2.1.1 Copyright (c) 2016 AJ Savino
+* SlickSelect v2.1.2 Copyright (c) 2016 AJ Savino
 * https://github.com/koga73/SlickSelect
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -131,8 +131,6 @@ var SlickSelect = {
 				$slickSelect.on("click", _methods._handler_click);
 				if (_params.scroll){
 					$slickSelect.on("touchstart mousedown", _methods._handler_beginDrag);
-					$doc.on("touchmove mousemove", _methods._handler_moveDrag);
-					$doc.on("touchend mouseup", _methods._handler_endDrag);
 				}
 			},
 			
@@ -381,6 +379,15 @@ var SlickSelect = {
 				}
 				_vars._beginDragPoint = _methods._getTouchPoint(evt);
 				
+				//Bind events
+				var $doc = $(document);
+				if (_params.scroll){
+					$doc.off("touchmove mousemove", _methods._handler_moveDrag);
+					$doc.on("touchmove mousemove", _methods._handler_moveDrag);
+					$doc.off("touchend mouseup", _methods._handler_endDrag);
+					$doc.on("touchend mouseup", _methods._handler_endDrag);
+				}
+				
 				var $options = $(_vars._options);
 				if ($options.is(":visible")){
 					_vars._isDragging = true;
@@ -429,6 +436,13 @@ var SlickSelect = {
 					return;
 				}
 				_vars._isDragging = false;
+				
+				//Unbind events
+				var $doc = $(document);
+				if (_params.scroll){
+					$doc.off("touchmove mousemove", _methods._handler_moveDrag);
+					$doc.off("touchend mouseup", _methods._handler_endDrag);
+				}
 				
 				var $optionSelected = $("." + SlickSelect.CLASS_OPTION_SELECTED, $(_vars._slickSelect));
 				if ($optionSelected.length){
