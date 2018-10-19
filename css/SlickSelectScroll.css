@@ -24,12 +24,6 @@
     -ms-user-select:none;
 }
 
-.slickselect:focus {
-	outline:none;
-	-moz-outline:none;
-	-webkit-outline:none;
-}
-
 .slickselect .slickselect-display-selected {
 	display:inline-block;
 	visibility:hidden;

@@ -1,5 +1,5 @@
 /*
-* SlickSelect v2.1.2 Copyright (c) 2016 AJ Savino
+* SlickSelect v2.2.0 Copyright (c) 2018 AJ Savino
 * https://github.com/koga73/SlickSelect
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,8 @@ var SlickSelect = {
 		placeholder:null,	//Placeholder text
 		scroll:false,		//Enable touch scrolling
 		scrollSnapDist:8,	//Distance to snap to option
-		clickDist:8			//Distance to trigger click rather than scroll
+		clickDist:8,		//Distance to trigger click rather than scroll
+		hover:false			//Open on hover
 	}
 };
 (function($){ //Dependencies: jQuery
@@ -129,6 +130,10 @@ var SlickSelect = {
 				$doc.on("keydown", _methods._handler_keydown);
 				$slickSelect.on("focusout", _methods._handler_focusout);
 				$slickSelect.on("click", _methods._handler_click);
+				if (_params.hover){
+					$slickSelect.on("mouseenter", _methods._handler_mouseenter);
+					$slickSelect.on("mouseleave", _methods._handler_mouseleave);
+				}
 				if (_params.scroll){
 					$slickSelect.on("touchstart mousedown", _methods._handler_beginDrag);
 				}
@@ -143,6 +148,8 @@ var SlickSelect = {
 					var $slickSelect = $(slickSelect);
 					$slickSelect.off("focusout", _methods._handler_focusout);
 					$slickSelect.off("click", _methods._handler_click);
+					$slickSelect.off("mouseenter", _methods._handler_mouseenter);
+					$slickSelect.off("mouseleave", _methods._handler_mouseleave);
 					$slickSelect.off("touchstart mousedown", _methods._handler_beginDrag);
 					
 					var $doc = $(document);
@@ -273,6 +280,18 @@ var SlickSelect = {
 				}
 				
 				return false;
+			},
+			
+			_handler_mouseenter:function(evt){
+				if (!_vars.isOpen){
+					_methods.open();
+				}
+			},
+			
+			_handler_mouseleave:function(evt){
+				if (_vars.isOpen){
+					_methods.close();
+				}
 			},
 			
 			_handler_keydown:function(evt){
