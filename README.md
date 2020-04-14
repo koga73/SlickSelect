@@ -1,9 +1,8 @@
-##SlickSelect##
-*By: AJ Savino*
+## SlickSelect
 
 SlickSelect - A jQuery plugin that extends select dropdown styles and functionality. Uses standard select markup. Works down to IE8. Keyboard accessible. Supports touch events for "scrolling" lists (see demo).
 
-###Implementation###
+### Implementation
 Include JS and CSS files on your page in addition to jQuery
 
 HTML
@@ -23,7 +22,7 @@ HTML
 JS
 ```html
 $("#sltTest").SlickSelect();
-			
+
 $("#sltTest").on("change", function(){
 	console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
 });
@@ -31,7 +30,7 @@ $("#sltTest").on("change", function(){
 
 ----------
 
-####JavaScript API####
+#### JavaScript API
 ```javascript
 /* Events */
 SlickSelect.EVENT_CHANGE
@@ -46,7 +45,7 @@ var ss = $("#sltTest").SlickSelect({
 	placeholder:null,	//Placeholder text
 	scroll:false,		//Enable touch scrolling
 	scrollSnapDist:8,	//Distance to snap to option
-	clickDist:8			//Distance to trigger click rather than scroll	
+	clickDist:8			//Distance to trigger click rather than scroll
 });
 
 //Called automatically
@@ -85,7 +84,7 @@ ss.SlickSelect.value();
 
 ----------
 
-####Events####
+#### Events
 ```javascript
 //Note: Events are fired from the original select element
 $("#sltTest").on("change", function(){
