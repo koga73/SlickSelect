@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>SlickSelect</title>
-		
+
 		<style type="text/css">
 			* {
 				margin:0;
@@ -10,10 +10,10 @@
 				padding:0;
 				font-family:arial, helvetica, sans-serif;
 			}
-			
+
 			#container {
 				margin-top:256px;
-				font-size:0; //Hack to get inline-block elements to not have space between them
+				font-size:0; /* Hack to get inline-block elements to not have space between them */
 			}
 			#sltPeople {
 				float:left;
@@ -28,7 +28,7 @@
 				width:33.33%
 			}
 		</style>
-		
+
 		<link href="css/SlickSelectScroll.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
@@ -39,7 +39,7 @@
 				<option value="3">3 people</option>
 				<option value="4">4 people</option>
 				<option value="5">5 people</option>
-			</select>			
+			</select>
 			<select id="sltDay" name="sltDay">
 				<option value="today">Today</option>
 				<option value="tomorrow">Tomorrow</option>
@@ -55,7 +55,7 @@
 				<option value="9:00">9:00PM</option>
 			</select>
 		</div>
-		
+
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script type="text/javascript" src="js/SlickSelect.js"></script>
 		<script type="text/javascript">
@@ -64,13 +64,13 @@
 			}).on("change", function(){
 				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
 			});
-			
+
 			$("#sltDay").SlickSelect({
 				scroll:true
 			}).on("change", function(){
 				console.log("CHANGE: ", $(this)[0].selectedIndex, $(this).val());
 			})
-			
+
 			$("#sltTime").SlickSelect({
 				scroll:true
 			}).on("change", function(){
